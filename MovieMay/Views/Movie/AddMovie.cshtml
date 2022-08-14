@@ -1,0 +1,135 @@
+﻿@model MovieMayDL.Models.Movie
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Add Movie";
+    <style>
+        body {
+            background-image: url('../images/Index.gif');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+}
+<div class="text-center">
+    <h1 class="text-light ml-lg-5">Add A New Movie</h1>
+        <div class="p-4 border border-light">
+            <form class="form-horizontal" asp-action="AddMovie" onsubmit="return showLoader(this)">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Name</label>
+                        <input asp-for="Name" class="form-control" type="text" placeholder="Enter movie name" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">About</label>
+                        <input asp-for="About" class="form-control" type="text" placeholder="Enter description" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Genre</label>
+                        <input asp-for="Genre" class="form-control" type="text" placeholder="Enter genre" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Director</label>
+                        <input asp-for="Director" class="form-control" type="text" placeholder="Enter movie director" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Starring</label>
+                        <input asp-for="Starring" class="form-control" type="text" placeholder="Enter movie actors" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Producer</label>
+                        <input asp-for="Producer" class="form-control" type="text" placeholder="Enter movie producer" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Watchtime</label>
+                        <input asp-for="Watchtime" class="form-control" type="text" placeholder="Enter movie watchtime" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Release</label>
+                        <input asp-for="Release" class="form-control" type="text" placeholder="Enter movie release year" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Banner URL</label>
+                        <input asp-for="Poster" class="form-control" type="text" placeholder="Enter movie poster URL" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="float-left control-label text-light required font-weight-bolder">Trailer URL</label>
+                        <input asp-for="Trailer" class="form-control" type="text" placeholder="Enter movie trailer embed URL" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="control-label text-light required font-weight-bolder">Rating</label><br />
+                        <div onmouseout="CRateSelected()">
+                            <span class="starFade" id="Rate1" onclick="CRate(1)" onmouseover="CRateOver(1)" onmouseout="CRateOut(1)"></span>
+                            <span class="starFade" id="Rate2" onclick="CRate(2)" onmouseover="CRateOver(2)" onmouseout="CRateOut(2)"></span>
+                            <span class="starFade" id="Rate3" onclick="CRate(3)" onmouseover="CRateOver(3)" onmouseout="CRateOut(3)"></span>
+                            <span class="starFade" id="Rate4" onclick="CRate(4)" onmouseover="CRateOver(4)" onmouseout="CRateOut(4)"></span>
+                            <span class="starFade" id="Rate5" onclick="CRate(5)" onmouseover="CRateOver(5)" onmouseout="CRateOut(5)"></span>
+                        </div>
+                        <input asp-for="Rating" type="hidden" name="Rating" id="Rating" value="0" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-inline col-12">
+                        <div class="col-4"></div>
+                        <div class="col-2">
+                            <a href="@Url.Action("Index","Movie")" class="btn btn-info" value="Back">Back</a>
+                        </div>
+                        <div class="col-2">
+                            <input type="submit" class=" btn btn-success" value="Create" />
+                        </div>
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+@{
+    <script>
+        function CRate(r) {
+            $("#Rating").val(r);
+            for (var i = 1; i <= r; i++) {
+                $("#Rate" + i).attr('class', 'starGlow');
+            }
+            // unselect remaining
+            for (var i = r + 1; i <= 5; i++) {
+                $("#Rate" + i).attr('class', 'starFade');
+            }
+        }
+
+        function CRateOver(r) {
+            for (var i = 1; i <= r; i++) {
+                $("#Rate" + i).attr('class', 'starGlow');
+            }
+        }
+
+        function CRateOut(r) {
+            for (var i = 1; i <= r; i++) {
+                $("#Rate" + i).attr('class', 'starFade');
+            }
+        }
+
+        function CRateSelected() {
+            var setRating = $("#Rating").val();
+            for (var i = 1; i <= setRating; i++) {
+                $("#Rate" + i).attr('class', 'starGlow');
+            }
+        }
+    </script>
+    if (TempData["msg"] != null)
+    {
+        <script>
+            alert('@TempData["msg"]');
+        </script>
+    }
+}

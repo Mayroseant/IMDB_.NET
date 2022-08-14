@@ -1,0 +1,82 @@
+﻿@model MovieViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = Model.MovieDetail.Name;
+    <style>
+        body {
+            background-image: url('https://cutewallpaper.org/21/galaxy-gif-background/Stars-Gif-Transparent-Background-Ryanmartinproductions.com.gif');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+
+    var rating = Convert.ToInt32(Model.MovieDetail.Rating);
+}
+<h1 class="text-center text-light">@Model.MovieDetail.Name</h1>
+<div class="card mb-3 p-2">
+    <iframe class="card-img-top mb-3" width="560" height="315" src="@Model.MovieDetail.Trailer" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="@Model.MovieDetail.Poster" class="img-fluid rounded-start" alt="Movie Poster">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Movie Name: </strong>@Model.MovieDetail.Name</h5>
+                <p class="card-text"><strong>Description: </strong>@Model.MovieDetail.About</p>
+                <p class="card-text"><strong>Genre: </strong>@Model.MovieDetail.Genre</p>
+                <p class="card-text"><strong>Director: </strong>@Model.MovieDetail.Director</p>
+                <p class="card-text"><strong>Starring: </strong>@Model.MovieDetail.Starring</p>
+                <p class="card-text"><strong>Producer: </strong>@Model.MovieDetail.Producer</p>
+                <p class="card-text"><strong>Watchtime: </strong>@Model.MovieDetail.Watchtime</p>
+                <p class="card-text"><strong>Release Year: </strong>@Model.MovieDetail.Release</p>
+                <p class="card-text">
+                    <strong>Rating: </strong>
+                    @for (var i = 1; i <= rating; i++)
+                    {
+                        <span class="starGlowN"></span>
+                    }
+                    @for (var i = (rating + 1); i <= 5; i++)
+                    {
+                        <span class="starFadeN"></span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col">
+            <form class="card-action m-lg-5" asp-action="AddReview1" data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-mode="replace"
+                  data-ajax-update="#ajaxresult" onsubmit="return showLoader(this)">
+                <div class="form-inline">
+                    <input asp-for="@Model.NewReview.Comment" type="text" placeholder="Say something good!" class="form-control m-1" style="width:84%" required />
+                    <input asp-for="@Model.NewReview.MovieId" type="hidden" value="@Model.MovieDetail.MId" required />
+                    <input asp-for="@Model.NewReview.Mail" type="hidden" value="@User.Identity.Name" required />
+                    <a href="@Url.Action("Index","Movie")" class="btn btn-info m-1" value="Back">Back</a>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-send-o"></i></button>
+                </div>
+               
+            </form>
+        </div>
+    </div>
+    <div style="height:500px;overflow:scroll;overflow-x:hidden">
+        @foreach (var item in Model.ReviewModel)
+        {
+            <hr />
+            <div class="row g-0">
+                <div class="col-lg m-4">
+                    <p class="card-text">
+                        <strong>@item.Mail</strong>
+                        <br />
+                        <small class="text-secondary">@item.PostDatetime</small>
+                    </p>
+                    <p class="card-text">@item.Comment</p>
+                </div>
+            </div>
+        }
+    </div>
+   
+</div>

@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MovieMay</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <script>
+        function showLoader(element) {debugger
+            $('#load').css('display', 'block')
+            $('#load').next().next().css('opacity', '.3')
+        }
+
+        function hideLoader() {
+            $('#load').css('display', 'none')
+        }
+    </script>
+</head>
+<body>
+    <div style="display:none" id="load"></div>
+    @* Nav bar *@
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3 border-bottom" style="background-color:black">
+            <div class="container">
+                <a class="navbar-brand text-light font-weight-bolder" asp-area="" asp-controller="User" asp-action="Login" onclick="return showLoader(this)">MovieMay</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        //Login, Signup
+                        <ul class="navbar-nav flex-grow-1 justify-content-end">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Login" onclick="return showLoader(this)">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Signup" onclick="return showLoader(this)">Signup</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        //After Login
+                        @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "Admin")
+                        {
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-area="" asp-controller="Movie" asp-action="Index" onclick="return showLoader(this)">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-area="" asp-controller="Movie" asp-action="AddMovie" onclick="return showLoader(this)">Add Movie</a>
+                    </li>
+                </ul>
+                            <ul class="navbar-nav flex-grow-1 justify-content-end">
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Movie" asp-action="Index" onclick="return showLoader(this)">Hello @User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout" onclick="return showLoader(this)">Logout</a>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="navbar-nav flex-grow-1 justify-content-end">
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Movie" asp-action="Index" onclick="return showLoader(this)">Hello @User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout" onclick="return showLoader(this)">Logout</a>
+                                </li>
+                            </ul>
+                        }
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    @*main body*@
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @*footer*@
+    <footer class="footer text-light border-top" style="background-color:black">
+        <div class="container">
+            &copy; 2021 - MovieMay
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

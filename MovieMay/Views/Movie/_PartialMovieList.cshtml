@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Review>
+<div>
+    <ul class="list-group">
+        @foreach (var comment in Model.TakeLast(3))
+        {
+            <li class="list-group-item m-1">
+                <strong>@comment.Mail</strong>
+                <br />
+                <div data-toggle="tooltip" data-placement="top" title="@comment.Comment" class="textEllips">@comment.Comment</div>
+            </li>
+        }
+    </ul>
+</div>

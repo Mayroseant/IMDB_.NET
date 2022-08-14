@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/MovieMay
+/MovieMay/bin/Debug/net5.0
+/MovieMay/obj
+/MovieMayDL/bin/Debug/net5.0
+/MovieMayDL/obj
+/.vs
